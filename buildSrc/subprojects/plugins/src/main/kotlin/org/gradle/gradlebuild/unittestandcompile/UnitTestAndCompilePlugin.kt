@@ -56,17 +56,9 @@ import testLibrary
 import java.util.concurrent.Callable
 import java.util.jar.Attributes
 import org.gradle.testing.PerformanceTest
-import gitInfo
 
 
-/**
- * By default, we run an extra build step ("GRADLE_RERUNNER") which runs all test classes failed in the previous build step ("GRADLE_RUNNER").
- * However, if previous test failures are too many (>10), this is probably not caused by flakiness.
- * In this case, we simply skip the GRADLE_RERUNNER step.
- */
-const val tooManyTestFailuresThreshold = 10
-
-
+@Suppress("unused")
 class UnitTestAndCompilePlugin : Plugin<Project> {
     override fun apply(project: Project): Unit = project.run {
         apply(plugin = "groovy")
@@ -267,7 +259,6 @@ class UnitTestAndCompilePlugin : Plugin<Project> {
                 useJUnitPlatform()
             }
             configureJvmForTest()
-            configureGitInfo()
             addOsAsInputs()
 
             if (BuildEnvironment.isCiServer && this !is PerformanceTest) {
@@ -279,17 +270,6 @@ class UnitTestAndCompilePlugin : Plugin<Project> {
                     logger.lifecycle("maxParallelForks for '$path' is $maxParallelForks")
                 }
             }
-        }
-    }
-
-    /**
-     * Some tests depends on repository's git information.
-     */
-    private
-    fun Test.configureGitInfo() {
-        project.gitInfo.run {
-            systemProperty("gradleBuildBranch", gradleBuildBranch.get())
-            systemProperty("gradleBuildCommitId", gradleBuildCommitId.get())
         }
     }
 
