@@ -35,6 +35,8 @@ public class StopWhenIdleConsumerConnection extends NotifyDaemonsAboutChangedPat
 
     @Override
     public void stopWhenIdle(ConsumerOperationParameters operationParameters) {
-        ((InternalStopWhenIdleConnection) getDelegate()).stopWhenIdle(operationParameters);
+        Thread stopThread = new Thread(() -> ((InternalStopWhenIdleConnection) getDelegate()).stopWhenIdle(operationParameters));
+        stopThread.setDaemon(true);
+        stopThread.start();
     }
 }

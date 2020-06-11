@@ -25,7 +25,6 @@ import org.gradle.tooling.GradleConnector
 import org.gradle.tooling.ProjectConnection
 import org.gradle.tooling.model.GradleProject
 import org.gradle.tooling.model.eclipse.EclipseProject
-import spock.lang.Ignore
 import spock.util.concurrent.PollingConditions
 
 @ToolingApiVersion(">=6.5")
@@ -176,7 +175,6 @@ class ToolingApiShutdownCrossVersionSpec extends CancellationSpec {
         assertNoRunningDaemons()
     }
 
-    @Ignore
     def "can call disconnect after the build was cancelled"() {
         buildFile << """
             task hang {
