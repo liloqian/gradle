@@ -218,6 +218,7 @@ class ApplicationPluginUnixShellsIntegrationTest extends AbstractIntegrationSpec
 task execStartScript(type: Exec) {
     workingDir '$startScriptDir.canonicalPath'
     environment PATH: "$path"
+    environment JAVA_OPTS: ''
     commandLine './sample'
     args "${args.join('", "')}"
 }
